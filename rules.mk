@@ -1,1 +1,3 @@
 ENCODER_MAP_ENABLE = yes
+DEBOUNCE_TYPE = custom
+COMBO_ENABLE = yes
