@@ -5,6 +5,7 @@
  */
 
 #include QMK_KEYBOARD_H
+#include "keychron_debounce.h"
 
 enum layers{
   GAMING, // This is the old "MAC_BASE", and can be toggled with the physical back button. .
@@ -131,3 +132,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [FN2]      = {ENCODER_CCW_CW(_______, _______) }
 };
 #endif // ENCODER_MAP_ENABLE
+
+void keyboard_post_init_user(void) {
+    debounce_config_reset();
+}
