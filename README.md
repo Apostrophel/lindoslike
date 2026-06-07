@@ -20,7 +20,7 @@ After these steps, the keymap-folder `lindoslike` here should be placed in the `
 ## Editing and flashing the keymap 
 To change the layout, layers, combo keys and more, edit `keymap.c`. To flash the Q2 Pro keyboard, navigate to the root QMK folder `qmk_firmware/`, make sure that the correct layout and keyboard is set as default (See QMK Docs). Then,
 ```
-qmk build
+qmk compile
 qmk flash
 ```
 
