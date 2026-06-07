@@ -32,23 +32,30 @@ enum custom_keycodes {
 #define C_J RCTL_T(KC_J)    // Control key when held, J when pressed
 
 
-// This is the symbols:
-#define SYM_LPRN S(KC_8)       // (  this is ok
-#define SYM_RPRN S(KC_9)       // )  this is ok
-#define SYM_LBRC RALT(KC_8)    // [  should be alt gr + KC_8
-#define SYM_RBRC RALT(KC_9)    // ]
-#define SYM_LCBR RALT(KC_7)    // {
-#define SYM_RCBR RALT(KC_0)    // }
-#define SYM_BSLS KC_EQL        //  backslash = \, this is ok
-#define SYM_SCLN KC_SCLN       // ;
-#define SYM_COLN S(KC_SCLN)    // :
-#define SYM_QUOT KC_BSLS   // '
-#define SYM_DQUO S(KC_2)   // "
-#define SYM_COMM KC_COMM    // ,
-#define SYM_LT   S(KC_COMM) // <
-#define SYM_DOT  KC_DOT     // .
-#define SYM_GT   S(KC_DOT)  // >
-#define SYM_SLSH S(KC_7)    // This is: /, this is ok
+// Norwegian ISO layout symbols (modifier + key combos).
+// On Norwegian layout: Shift+comma = ;  Shift+dot = :  (not < and > as on US layout)
+// Colon (:) and semicolon (;) are handled together by the COLN_SEMI custom keycode.
+#define NO_LPAR  S(KC_8)       // (  — Shift+8
+#define NO_RPAR  S(KC_9)       // )  — Shift+9
+#define NO_LBRC  RALT(KC_8)    // [  — AltGr+8
+#define NO_RBRC  RALT(KC_9)    // ]  — AltGr+9
+#define NO_LCBR  RALT(KC_7)    // {  — AltGr+7
+#define NO_RCBR  RALT(KC_0)    // }  — AltGr+0
+#define NO_BSLS  KC_EQL        // \  — Shift+NO_BSLS gives ` (backtick)
+#define NO_QUOT  KC_BSLS       // '  — apostrophe
+#define NO_DQUO  S(KC_2)       // "  — Shift+2
+#define NO_SLSH  S(KC_7)       // /  — Shift+7
+
+// Norwegian ISO physical key name aliases.
+// QMK uses US ANSI names internally; these make no sense on a Norwegian keyboard.
+#define NO_AA    KC_LBRC       // å / Å   (QMK name: KC_LBRC)
+#define NO_AE    KC_QUOT       // æ / Æ   (QMK name: KC_QUOT)
+#define NO_OE    KC_SCLN       // ø / Ø   (QMK name: KC_SCLN)
+#define NO_DIAE  KC_RBRC       // ¨ / ^   dead diaeresis / dead circumflex (QMK name: KC_RBRC)
+#define NO_APOS  KC_NUHS       // ' / *   apostrophe / asterisk, ISO key next to Enter (QMK name: KC_NUHS)
+#define NO_LABK  KC_NUBS       // < / >   ISO key left of Z (QMK name: KC_NUBS)
+#define NO_PLUS  KC_MINS       // + / ?   (QMK name: KC_MINS — it is NOT minus on Norwegian)
+#define NO_DASH  KC_SLSH       // - / _   (QMK name: KC_SLSH — it is NOT slash on Norwegian)
 
 
 // Customo combo keys for symbols on  top of the normal keyboard.
@@ -66,18 +73,18 @@ const uint16_t PROGMEM forward_slash[] = {G_A, C_F, COMBO_END};
 const uint16_t PROGMEM back_slash[] = {C_J, COLN_SEMI, COMBO_END};
 
 combo_t key_combos[] = {
-    COMBO(less_than, KC_NUBS),
-    COMBO(greater_than, S(KC_NUBS)),
-    COMBO(open_parentasis, SYM_LPRN),
-    COMBO(close_parentasis, SYM_RPRN),
-    COMBO(open_bracket, SYM_LBRC),
-    COMBO(close_bracket, SYM_RBRC),
-    COMBO(open_curl_bracket, SYM_LCBR),
-    COMBO(close_curl_bracket,SYM_RCBR),
-    COMBO(double_quote, SYM_DQUO),
-    COMBO(single_quote, SYM_QUOT),
-    COMBO(back_slash, SYM_BSLS),
-    COMBO(forward_slash, SYM_SLSH)
+    COMBO(less_than, NO_LABK),
+    COMBO(greater_than, S(NO_LABK)),
+    COMBO(open_parentasis, NO_LPAR),
+    COMBO(close_parentasis, NO_RPAR),
+    COMBO(open_bracket, NO_LBRC),
+    COMBO(close_bracket, NO_RBRC),
+    COMBO(open_curl_bracket, NO_LCBR),
+    COMBO(close_curl_bracket, NO_RCBR),
+    COMBO(double_quote, NO_DQUO),
+    COMBO(single_quote, NO_QUOT),
+    COMBO(back_slash, NO_BSLS),
+    COMBO(forward_slash, NO_SLSH)
 };
 
 // Only allow layers on the main layer "Windows":
@@ -96,17 +103,17 @@ bool get_combo_must_tap(uint16_t combo_index, combo_t *combo) {
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [GAMING] = LAYOUT_iso_68( // Accessible by the physical "Mac"-togggle button  on the back. This layer prevents combo-keys and home row mods.
-        KC_ESC,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,     KC_EQL,              KC_BSPC, KC_MUTE,
-        KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,     KC_RBRC,                      KC_DEL,
-        KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,     KC_NUHS,             KC_ENT,  KC_HOME,
-        KC_LSFT,  KC_NUBS,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,     KC_RSFT,             KC_UP,
+        KC_ESC,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     NO_PLUS,     NO_BSLS,             KC_BSPC, KC_MUTE,
+        KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     NO_AA,       NO_DIAE,                      KC_DEL,
+        KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     NO_OE,    NO_AE,       NO_APOS,             KC_ENT,  KC_HOME,
+        KC_LSFT,  NO_LABK,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   NO_DASH,     KC_RSFT,             KC_UP,
         KC_LCTL,  KC_LGUI,  KC_LALT,                                KC_SPC,                                 KC_RALT,  MO(GAME_FN1), MO(FN2),  KC_LEFT,  KC_DOWN, KC_RGHT),
 
     [WIN_BASE] = LAYOUT_iso_68( //Keeping the name "Win" since its accessible by the "Win"-toggle button on thte back.
-        KC_ESC,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,     KC_EQL,            KC_BSPC, KC_MUTE,
-        KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,     KC_RBRC,                    KC_DEL,
-        KC_CAPS,  G_A,      A_S,      S_D,      C_F,      KC_G,     KC_H,     C_J,      S_K,      A_L,      COLN_SEMI,KC_QUOT,     KC_NUHS,           KC_ENT,  KC_HOME,
-        KC_LSFT,  KC_NUBS,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,              KC_RSFT,  KC_UP,
+        KC_ESC,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     NO_PLUS,     NO_BSLS,           KC_BSPC, KC_MUTE,
+        KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     NO_AA,       NO_DIAE,                    KC_DEL,
+        KC_CAPS,  G_A,      A_S,      S_D,      C_F,      KC_G,     KC_H,     C_J,      S_K,      A_L,      COLN_SEMI,NO_AE,       NO_APOS,           KC_ENT,  KC_HOME,
+        KC_LSFT,  NO_LABK,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   NO_DASH,              KC_RSFT,  KC_UP,
         KC_LCTL,  KC_LGUI,  KC_LALT,                                KC_SPC,                                 KC_RALT,  MO(WIN_FN1), MO(FN2), KC_LEFT,  KC_DOWN, KC_RGHT),
 
     [GAME_FN1] = LAYOUT_iso_68(
