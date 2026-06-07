@@ -136,3 +136,94 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 void keyboard_post_init_user(void) {
     debounce_config_reset();
 }
+
+
+// RGB Backlight color experiment:
+//
+
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+      // First blank everything (so no animation bleeds through)
+      for (uint8_t i = led_min; i < led_max; i++) {
+          rgb_matrix_set_color(i, 0, 0, 0);
+      }
+
+      // 0 to 13 ( first row)
+      rgb_matrix_set_color(0, 91,  206, 250);   // ESC
+      rgb_matrix_set_color(1, 91,  206, 250);   // 1
+      rgb_matrix_set_color(2, 91,  206, 250);   // 2
+      rgb_matrix_set_color(3, 91,  206, 250);   // 3
+      rgb_matrix_set_color(4, 91,  206, 250);   // 3
+      rgb_matrix_set_color(5, 91,  206, 250);   // 3
+      rgb_matrix_set_color(6, 91,  206, 250);   // 3
+      rgb_matrix_set_color(7, 91,  206, 250);   // 3
+      rgb_matrix_set_color(8, 91,  206, 250);   // 3
+      rgb_matrix_set_color(8, 91,  206, 250);   // 3
+      rgb_matrix_set_color(9, 91,  206, 250);   // 3
+      rgb_matrix_set_color(10, 91,  206, 250);   // 3
+      rgb_matrix_set_color(11, 91,  206, 250);   // 3
+      rgb_matrix_set_color(12, 91,  206, 250);   // 3
+      rgb_matrix_set_color(13, 91,  206, 250);   // 3
+
+      // 14 to 27 (second row)
+      rgb_matrix_set_color(14, 245,  169, 184);   // 3
+      rgb_matrix_set_color(15, 245,  169, 184);   // 3
+      rgb_matrix_set_color(16, 245,  169, 184);   // 3
+      rgb_matrix_set_color(17, 245,  169, 184);   //
+      rgb_matrix_set_color(18, 245,  169, 184);   // 3
+      rgb_matrix_set_color(19, 245,  169, 184);   // 3
+      rgb_matrix_set_color(20, 245,  169, 184);   // 3
+      rgb_matrix_set_color(21, 245,  169, 184);   // 3
+      rgb_matrix_set_color(22, 245,  169, 184);   // 3
+      rgb_matrix_set_color(23, 245,  169, 184);   // 3
+      rgb_matrix_set_color(24, 245,  169, 184);   // 3
+      rgb_matrix_set_color(25, 245,  169, 184);   // 3
+      rgb_matrix_set_color(26, 245,  169, 184);   // 3
+      rgb_matrix_set_color(27, 245,  169, 184);   // 3
+
+      // 17 to (middle row)
+      rgb_matrix_set_color(28, 255,   255, 255);   // caps
+      rgb_matrix_set_color(29, 255,   255, 255);   // A
+      rgb_matrix_set_color(30, 255,   255, 255);   // S
+      rgb_matrix_set_color(31, 255,   255, 255);   // D
+      rgb_matrix_set_color(32, 255,   255, 255);   // F
+      rgb_matrix_set_color(33, 255,   255, 255);   // F
+      rgb_matrix_set_color(34, 255,   255, 255);   // F
+      rgb_matrix_set_color(35, 255,   255, 255);   // F
+      rgb_matrix_set_color(36, 255,   255, 255);   // F
+      rgb_matrix_set_color(37, 255,   255, 255);   // F
+      rgb_matrix_set_color(38, 255,   255, 255);   // F
+      rgb_matrix_set_color(39, 255,   255, 255);   // F
+      rgb_matrix_set_color(40, 255,   255, 255);   // F
+      rgb_matrix_set_color(41, 255,   255, 255);   // F
+      rgb_matrix_set_color(42, 255,   255, 255);   // F
+
+        // 43 to (fourth row)
+      rgb_matrix_set_color(43, 245,   169, 184);   // left shift
+      rgb_matrix_set_color(44, 245,   169, 184);   // <
+      rgb_matrix_set_color(45, 245,   169, 184);   // z
+      rgb_matrix_set_color(46, 245,   169, 184);   //
+      rgb_matrix_set_color(47, 245,   169, 184);   // left shift
+      rgb_matrix_set_color(48, 245,   169, 184);   // left shift
+      rgb_matrix_set_color(49, 245,   169, 184);   // left shift
+      rgb_matrix_set_color(50, 245,   169, 184);   // left shift
+      rgb_matrix_set_color(51, 245,   169, 184);   // left shift
+      rgb_matrix_set_color(52, 245,   169, 184);   // left shift
+      rgb_matrix_set_color(52, 245,   169, 184);   // left shift
+      rgb_matrix_set_color(53, 245,   169, 184);   // left shift
+      rgb_matrix_set_color(54, 245,   169, 184);   // left shift
+      rgb_matrix_set_color(55, 245,   169, 184);   // left shift
+      rgb_matrix_set_color(56, 245,   169, 184);   // left shift
+                                                   //
+        // 55
+      rgb_matrix_set_color(57, 91,   206, 250);   // left ctrl
+      rgb_matrix_set_color(59, 91,   206, 250);   // left ctrl
+      rgb_matrix_set_color(60, 91,   206, 250);   // left ctrl
+      rgb_matrix_set_color(61, 91,   206, 250);   // left ctrl
+      rgb_matrix_set_color(62, 91,   206, 250);   // left ctrl
+      rgb_matrix_set_color(63, 91,   206, 250);   // left ctrl
+      rgb_matrix_set_color(64, 91,   206, 250);   // left ctrl
+      rgb_matrix_set_color(65, 91,   206, 250);   // left ctrl
+      rgb_matrix_set_color(66, 91,   206, 250);   // left ctrl
+
+      return false;
+}
