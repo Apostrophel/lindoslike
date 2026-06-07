@@ -15,18 +15,22 @@ enum layers{
   FN2,
 };
 
+enum custom_keycodes {
+    COLN_SEMI = SAFE_RANGE, // : when tapped, ; when shift-tapped (Norwegian layout)
+};
+
 
 // Custom macros for shorter keycode mapping.
 
 // This is the home row mods:
 #define G_A LGUI_T(KC_A)    // Gui key when held, A when pressed
-#define G_C LGUI_T(SYM_COLN) // Gui key when held, : when pressed
 #define A_S LALT_T(KC_S)    // ALT key when held, S when pressed
 #define A_L RALT_T(KC_L)    // ALT key when held, L when pressed
 #define S_D LSFT_T(KC_D)    // SHIFT key when held, D when pressed
 #define S_K RSFT_T(KC_K)    // SHIFT key when held, K when pressed
 #define C_F LCTL_T(KC_F)    // Control key when held, K when pressed
 #define C_J RCTL_T(KC_J)    // Control key when held, J when pressed
+
 
 // This is the symbols:
 #define SYM_LPRN S(KC_8)       // (  this is ok
@@ -48,6 +52,8 @@ enum layers{
 
 
 // Customo combo keys for symbols on  top of the normal keyboard.
+const uint16_t PROGMEM less_than[] = {KC_Q, KC_R, COMBO_END};
+const uint16_t PROGMEM greater_than[] = {KC_U, KC_P, COMBO_END};
 const uint16_t PROGMEM open_parentasis[] = {A_S, C_F, COMBO_END};
 const uint16_t PROGMEM close_parentasis[] = {C_J, A_L, COMBO_END};
 const uint16_t PROGMEM open_bracket[] = {KC_W, KC_R, COMBO_END};
@@ -57,9 +63,11 @@ const uint16_t PROGMEM close_curl_bracket[] = {KC_M, KC_DOT, COMBO_END};
 const uint16_t PROGMEM double_quote[] = {S_D, C_F, COMBO_END};
 const uint16_t PROGMEM single_quote[] = {C_J, S_K, COMBO_END};
 const uint16_t PROGMEM forward_slash[] = {G_A, C_F, COMBO_END};
-const uint16_t PROGMEM back_slash[] = {C_J, KC_SCLN, COMBO_END};
+const uint16_t PROGMEM back_slash[] = {C_J, COLN_SEMI, COMBO_END};
 
 combo_t key_combos[] = {
+    COMBO(less_than, KC_NUBS),
+    COMBO(greater_than, S(KC_NUBS)),
     COMBO(open_parentasis, SYM_LPRN),
     COMBO(close_parentasis, SYM_RPRN),
     COMBO(open_bracket, SYM_LBRC),
@@ -87,7 +95,7 @@ bool get_combo_must_tap(uint16_t combo_index, combo_t *combo) {
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [GAMING] = LAYOUT_iso_68( // Accessible by the physical "Mac"-togggle button  on the back.
+    [GAMING] = LAYOUT_iso_68( // Accessible by the physical "Mac"-togggle button  on the back. This layer prevents combo-keys and home row mods.
         KC_ESC,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,     KC_EQL,              KC_BSPC, KC_MUTE,
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,     KC_RBRC,                      KC_DEL,
         KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,     KC_NUHS,             KC_ENT,  KC_HOME,
@@ -97,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [WIN_BASE] = LAYOUT_iso_68( //Keeping the name "Win" since its accessible by the "Win"-toggle button on thte back.
         KC_ESC,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,     KC_EQL,            KC_BSPC, KC_MUTE,
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,     KC_RBRC,                    KC_DEL,
-        KC_CAPS,  G_A,      A_S,      S_D,      C_F,      KC_G,     KC_H,     C_J,      S_K,      A_L,      KC_SCLN,  KC_QUOT,     KC_NUHS,           KC_ENT,  KC_HOME,
+        KC_CAPS,  G_A,      A_S,      S_D,      C_F,      KC_G,     KC_H,     C_J,      S_K,      A_L,      COLN_SEMI,KC_QUOT,     KC_NUHS,           KC_ENT,  KC_HOME,
         KC_LSFT,  KC_NUBS,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,              KC_RSFT,  KC_UP,
         KC_LCTL,  KC_LGUI,  KC_LALT,                                KC_SPC,                                 KC_RALT,  MO(WIN_FN1), MO(FN2), KC_LEFT,  KC_DOWN, KC_RGHT),
 
@@ -132,6 +140,26 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [FN2]      = {ENCODER_CCW_CW(_______, _______) }
 };
 #endif // ENCODER_MAP_ENABLE
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case COLN_SEMI:
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    // Shift already held: send KC_COMM so OS sees Shift+Comma = ; on Norwegian
+                    register_code(KC_COMM);
+                } else {
+                    // No shift: send Shift+Dot = : on Norwegian
+                    register_code16(S(KC_DOT));
+                }
+            } else {
+                unregister_code(KC_COMM);
+                unregister_code16(S(KC_DOT));
+            }
+            return false;
+    }
+    return true;
+}
 
 void keyboard_post_init_user(void) {
     debounce_config_reset();
